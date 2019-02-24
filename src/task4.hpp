@@ -4,12 +4,11 @@ using namespace std;
 
 int solution(vector<int> &A)
 {
-    int result = 0, size = A.size();
+    int result = 0, size = A.size(), exit = 0;
 
-    for (int x = 0; x < size; x++)
+    for (int x = 0; x < size;)
     {
-        int previousHeight = 0;
-        bool error = false;
+        int previousHeight = 0, error = 0;
 
         for (int y = 0; y < size; y++)
         {
@@ -17,7 +16,13 @@ int solution(vector<int> &A)
             {
                 if (previousHeight > A[y])
                 {
-                    error = true;
+                    if (exit)
+                    {
+                        return result;
+                    }
+
+                    exit++;
+                    error = y;
                     break;
                 }
                 else
@@ -29,7 +34,19 @@ int solution(vector<int> &A)
 
         if (!error)
         {
-            result++;
+            if (exit == 0)
+            {
+                return size - x;
+            }
+            else
+            {
+                result++;
+                x++;
+            }
+        }
+        else
+        {
+            x = error - 1;
         }
     }
 
